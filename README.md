@@ -74,3 +74,79 @@ https://getbootstrap.com/docs/5.1/layout/containers/
   </div>
 </template>
 ```
+
+
+
+-----------------------
+# Search 필터,
+## Search 필터
+### 최신년도 설정
+
+```json
+name: 'year',
+items: (() => {
+  const years = []
+  const thisYear = new Date().getFullYear // 최신년도
+
+  for (let i = thisYear; i >= 1980; i -=1){
+    years.push(i)
+  }
+  return years
+```
+### Search 버튼
+```json
+// http 요청
+npm i axios
+```
+### Vuex
+중앙집중식 상태관리 패턴
+Store 개념!<br>
+prop이나 ref 등으로 컴포넌트 간 데이터(상태)를 공유할 수 있는데 굳이 Vuex가 필요한 이유
+
++ 공통의 상태를 공유하는 여러 컴포넌트가 있는 경우, 지나치게 중첩된 컴포넌트를 통과하는 prop이 생기게 된다. 이는 나중에 유지보수하기 힘든 난해한 코드가 될 수 있다.
++ 공통의 상태를 공유하기 때문에, 이 상태가 여러 컴포넌트에서 동일한 상태로 관리되어야 한다. Vue는 단방향으로 데이터가 흐르기때문에, 여러 컴포넌트가 한 상태를 공유하는 경우, 형제 컴포넌트간의 상태공유/관리가 복잡해질 수 있다.
+### Vuex 구성방법
+
+
+### 영화검색
+movie.js<br>
+변이 메소드 mutations<br>
+1. updatedState 라는 변에 메소드를 만들어줌.
+2. actions 의 context.commit 을 통해 객체데이터를 담아서
+3. payload 라는 메게변수에 전달된다.
+4. payload 는 겍체데이터인데 Object.keys 를 통해 배열데이터로 변환후
+5. 배열데이터의 수 만큼 forEach 를 통해 반복
+6. 한번 반복될 때 마다 omdbapi에서 가지고온 데이터를 할당하여 순서대로 key 값에 적용하여 
+7. state[movies] = payload[Search]
+8. state[message] = payload[Hello world!]
+9. state[loading] = payload[true]
+10. 
+
+```json
+mutations:{
+    updatedState(state, payload){
+      // ['movies', 'message', 'loading'] payload 전달된 겍체데이터는 Object.keys 를 통해 배열데이터로 forEach를 통해 반복
+      Object.keys( payload).forEach(key => {
+        state[key] = payload[key]
+      })
+    },
+    resetMovies(state) {
+      state.movies = []
+    }
+  },
+  // 비동기
+  actions: {
+    async searchMovies(context, payload) {
+      const { title, type, number ,year } = payload
+      const OMDB_API_KEY = '7035c60c'
+
+      const res = await axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=1`)
+      const { Search, totalReults } = res.data
+      context.commit('updatedState', {
+        movies: Search,
+        message: 'Hello world!',
+        loading: true
+      })
+    }
+  }
+```
