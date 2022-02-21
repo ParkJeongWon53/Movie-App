@@ -151,5 +151,9 @@ mutations:{
   }
 ```
 --------------------------
-## 영화 검색 추가 요청
+## 영화 목록에서 ID 중복 제거
 ### 
+link :[lodash_uniqBy](https://lodash.com/docs/4.17.15#uniqBy)<br>
+```
+ npm i lodash 
+```
