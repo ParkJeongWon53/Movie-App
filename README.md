@@ -153,7 +153,24 @@ mutations:{
 --------------------------
 ## 영화 목록에서 ID 중복 제거
 ### 
-link :[lodash_uniqBy](https://lodash.com/docs/4.17.15#uniqBy)<br>
+[lodash_uniqBy](https://lodash.com/docs/4.17.15#uniqBy)<br>
 ```
  npm i lodash 
+```
+-----------
+# 영화 아이템 
+## 아이템 기본출력
+## 텍스트 말줄임 표시와 배경 흐림 처리
+[white-space md](https://developer.mozilla.org/ko/docs/Web/CSS/white-space)<br/>
+[text-overflow mdn](https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow)
+```css
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+```
+
+[backdrop-filter](https://developer.mozilla.org/ko/docs/Web/CSS/backdrop-filter)
+CSS backdrop-filter는 요소 뒤 영역에 흐림이나 색상 시프트 등 그래픽 효과를 적용할 수 있는 속성입니다. 요소 "뒤"에 적용하기 때문에, 효과를 확인하려면 요소나 요소의 배경을 적어도 반투명하게는 설정해야 합니다.
+```css
+backdrop-filter: blur(2px) grayscale();
 ```
