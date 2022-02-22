@@ -174,3 +174,57 @@ CSS backdrop-filter는 요소 뒤 영역에 흐림이나 색상 시프트 등 �
 ```css
 backdrop-filter: blur(2px) grayscale();
 ```
+
+----
+# Container 너비 사용자 지정
+[Bootstrap_Containers](https://getbootstrap.com/docs/5.1/layout/containers/)<br>
+scss 수정
+```scss
+$container-max-widths: (
+  sm: 540px,
+  md: 704px,
+  lg: 924px,
+  xl: 1140px,
+  xxl: 1364px
+);
+```
+----
+# 에러메시지 출력과 로딩 에니메이션
+[Bootstrap_Spinners](https://getbootstrap.com/docs/5.1/components/spinners/)
+```html
+<!-- MovieList.vue 파일에붙여넣기 -->
+<div class="spinner-border text-primary"></div>
+```
+로딩 에니메이션은 검색중일 때만 실행되어야한다.<br>
+movie.js 영역에서 loading 값은 false이다.
+```js
+  state: () => {
+    return {
+      movies: [],
+      message: 'Search for the movie title!',
+      loading: false
+    }
+  },
+  ```
+  검색을 시작하념 true값으로 변해야한다!<br>
+  _fatchMovie 함수를 통해서 영화가 잘 검색 되거나, 문제가 있어서 catch문이 동작을 하던 로딩은 false로 만들어 주어야 한다.<br>
+ actions: 영역에서 try, catch 를 사용하고 있기 때문에 catch 아래 finally을 사용해보자!!
+ ```js
+ } catch( message){
+        commit('updateState', {
+          movies: [],
+          message: message
+        })
+      } finally {
+        commit('updateState', {
+          loading: false
+        })
+      }
+```
+--------
+
+# Footer
+------
+
+# 단일 영화 상세 정보 가져오기
+## 스켈레톤 UI

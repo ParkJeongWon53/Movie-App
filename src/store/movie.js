@@ -9,8 +9,9 @@ export default {
   state: () => {
     return {
       movies: [],
-      message: '',
-      loading: false
+      message: 'Search for the movie title!',
+      loading: false,
+      theMovie: {}
     }
   },
 
@@ -36,6 +37,17 @@ export default {
   // 비동기
   actions: {
     async searchMovies({ state, commit }, payload) {
+      
+      // 동시에 여러번 실행되는 것을 방지한다.
+      if (state.loading) {
+        return
+      }
+
+      commit ('updateState', {
+        message: '',
+        loading: true
+      })
+
       try {
         const res = await _fatchMovie({ 
           ...payload,
@@ -75,15 +87,44 @@ export default {
           movies: [],
           message: message
         })
+      } finally { // 무조건 loading: false 값으로 지정됨.
+        commit('updateState', {
+          loading: false
+        })
+      }
+    },
+    async searchMovieWithId({ state, commit }, payload) {
+      if (state.loading) return
+
+      commit('updateState', {
+        theMovie: {},
+        loading: true
+      })
+
+      try {
+        const res = await _fatchMovie(payload)
+        commit('updateState', {
+          theMovie: res.data
+        })
+      } catch (error) {
+        commit('updateState', {
+          theMovie: {}
+        })
+      } finally {
+        commit('updateState', {
+          loading: false
+        })
       }
     }
   }
 }
 
 function _fatchMovie(payload) {
-  const { title, type, year, page } = payload
+  const { title, type, year, page, id } = payload
   const OMDB_API_KEY = '7035c60c'
-  const  url = `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=${page}`
+  const  url = id 
+  ? `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}` 
+  : `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=${page}`
   
   return new Promise((reslove, reject) => {
     axios.get(url)
