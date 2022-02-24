@@ -103,6 +103,7 @@ export default {
 
       try {
         const res = await _fatchMovie(payload)
+        console.log(res.data)
         commit('updateState', {
           theMovie: res.data
         })

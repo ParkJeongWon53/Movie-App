@@ -231,3 +231,33 @@ movie.js 영역에서 loading 값은 false이다.
 ## 스켈레톤 UI
 유튜브처럼 웹페이지가 완전히 로딩되기 전에 사용자에게 미리 뼈대를 보여줌으로 사용자가 미리 예측할 수 있게 도와주는 UI이다.
 ## Loader
+## Ratings
+1. 개발자 페이지에서 Ratings: 를 열어보면 3개의 배열데이터가 있다.<br>
+Ratings: Array(3)<br>
+0: {Source: 'Internet Movie Database', Value: '6.8/10'}<br>
+1: {Source: 'Rotten Tomatoes', Value: '78%'}<br>
+2: {Source: 'Metacritic', Value: '64/100'}<br>
+2. 각각의 영화 평점 사이트의 이름과 점수데이터가 들어있다.
+3. https://raw.githubusercontent.com/ParkYoungWoong/vue3-movie-app/master/src/assets/Internet%20Movie%20Database.png 이미지 주소를 활용해 사용!!
+4. https://raw.githubusercontent.com/ParkYoungWoong/vue3-movie-app/master/src/assets/${name}.png 문자 보간`` 을 활용해준다.
+5. theMovie 안에 들어있는 .Ratings 안에있는 배열데이터를 v-for 를 사용해 반복 출력해준다.
+6. Ratings 안에 3개의 객체데이터를 가지고 있다. (Source, Value)
+7. Source: name, Value: score 직관적인 이름설정!
+```html
+        <div class="ratings">
+          <h3>Ratings</h3>
+          <div class="rating-wrap">
+            <div
+              v-for="{ Source: name, Value: score } in theMovie.Ratings"
+              :key="name"
+              :title="name"
+              class="rating">
+              <img
+                :src="`https://raw.githubusercontent.com/ParkYoungWoong/vue3-movie-app/master/src/assets/${name}.png`"
+                :alt="name" />
+              <span> {{ score }} </span>
+            </div>
+          </div>
+        </div>
+```ㄴ
+----
