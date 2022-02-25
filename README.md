@@ -259,5 +259,12 @@ Ratings: Array(3)<br>
             </div>
           </div>
         </div>
-```ㄴ
+```
 ----
+## 고해상도 포스터 불러오기
+이미지를 새로운 텝에서 열어주고,<br>
+https://m.media-amazon.com/images/M/MV5BMjA0YjYyZGMtN2U0Ni00YmY4LWJkZTItYTMyMjY3NGYyMTJkXkEyXkFqcGdeQXVyNDg4NjY5OTQ@._V1_SX300.jpg <br>
+마지막 V1_SX300.jpg 을 V1_SX700.jpg 으로 변경시켜주면 이미지 사이즈가 커지게 된다.<br>
+[실시간 이미지 리사이징](https://heropy.blog/2019/07/21/resizing-images-cloudfrount-lambda/)
+
+## vue 플러그인(이미지 로드 이벤트)

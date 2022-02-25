@@ -23,7 +23,7 @@
       v-else
       class="movie-details">
       <div
-        :style="{ backgroundImage: `url(${theMovie.Poster})`}"
+        :style="{ backgroundImage: `url(${requestDiffSizeImage(theMovie.Poster)})`}"
         class="poster">
         <Loader
           v-if="imageLoading"
@@ -83,9 +83,11 @@
 import Loader from '~/components/Loader'
 
 export default {
-
   components: {
     Loader
+  },
+  data() {
+    true
   },
   computed: {
     theMovie() {
@@ -101,6 +103,16 @@ export default {
       // movie/tt12334
       id: this.$route.params.id
     })
+  },
+  methods: {
+    requestDiffSizeImage(url, size = 700) {
+      const src = url.replace('SX300', `SX${size}`)
+      this.$loadImage(src)
+      .then(() => {
+        this.imageLoading = false
+      })
+      return src
+    }
   }
 }
 </script>
@@ -161,6 +173,7 @@ export default {
     background-size: cover;
     background-position: center;
     flex-shrink: 0;
+    position: relative;
   }
   .specs {
     flex-grow: 1;
