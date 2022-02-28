@@ -106,6 +106,11 @@ export default {
   },
   methods: {
     requestDiffSizeImage(url, size = 700) {
+      if (!url || url === 'N/A') { // 영화 포스터가 없거나 'N/A'(해당사항 없음) 이면, 
+        this.imageLoading = false // 로딩 에니메이션을 종료하고, 
+        return '' // 빈 문자열을 반환하여 백그라운드 이미지 출력없이 종료.
+      }
+
       const src = url.replace('SX300', `SX${size}`)
       this.$loadImage(src)
       .then(() => {

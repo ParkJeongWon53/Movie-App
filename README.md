@@ -268,3 +268,46 @@ https://m.media-amazon.com/images/M/MV5BMjA0YjYyZGMtN2U0Ni00YmY4LWJkZTItYTMyMjY3
 [실시간 이미지 리사이징](https://heropy.blog/2019/07/21/resizing-images-cloudfrount-lambda/)
 
 ## vue 플러그인(이미지 로드 이벤트)
+영화 검색창에서 작은 포스터들이 각각 로딩처리, 무비페이지에서 이미지 로딩 처리.
+
+## 영화 포스터 없는 경우 예외 처리
+포스터가 없는경우 해당 포스터는 무한 로딩으로 보여지게 된다.<br>
+
+```js
+// MovieItem.vue
+methods: {
+    async init() {
+      const poster = this.movie.Poster
+      if (!poster || poster === 'N/A') {
+        this.imageLoding = false
+      }
+      await this.$loadImage(this.movie.Poster)
+      this.imageLoding = false
+    }
+  }
+```
+movie페이지에서도 포스터가 없기 때문에 Movie.vue 수정!
+```js
+// Movie.vue
+methods: {
+    requestDiffSizeImage(url, size = 700) {
+      if (!url || url === 'N/A') { // 영화 포스터가 없거나 'N/A'(해당사항 없음) 이면, 
+        this.imageLoading = false // 로딩 에니메이션을 종료하고, 
+        return '' // 빈 문자열을 반환하여 백그라운드 이미지 출력없이 종료.
+      }
+
+      const src = url.replace('SX300', `SX${size}`)
+      this.$loadImage(src)
+      .then(() => {
+        this.imageLoading = false
+      })
+      return src
+    }
+  }
+```
+
+## Nav 경로 일치 및 활성화
+Movie 페이지에서 기본 정보로 겨울왕국2를 보여지게 설정되었지만 Search페이지에서 검색으로 포스터 클릭시 Movie페이지 활성화와 정보 일치.
+
+## About
+
