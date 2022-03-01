@@ -310,4 +310,56 @@ methods: {
 Movie 페이지에서 기본 정보로 겨울왕국2를 보여지게 설정되었지만 Search페이지에서 검색으로 포스터 클릭시 Movie페이지 활성화와 정보 일치.
 
 ## About
+인적사항
+
+## 404 page Not Found
+[vue router](https://router.vuejs.org/guide/essentials/dynamic-matching.html#catch-all-404-not-found-route)<br>
+1. routes 폴더에 NotFound.vue 파일 생성
+2.  routes 폴더안에 index.js 파일에서 추가
+```js
+// import { createRouter, createWebHashHistory } from 'vue-router'
+// import Home from './Home.vue'
+// import Movie from './Movie.vue'
+// import About from './About.vue'
+import NotFound from './NotFound.vue'
+
+
+export default createRouter({ 
+  // // Hash모드
+  // // https://google.com/#/search
+  // history: createWebHashHistory(),
+  
+  // // pages
+  // // https://google.com/
+  // routes: [
+  //   {
+  //     path:'/',
+  //     component: Home
+  //   },
+  //   {
+  //     path:'/movie/:id',
+  //     component: Movie
+  //   },
+  //   {
+  //     path:'/about',
+  //     component: About
+  //   },
+    {
+      path: '/:NotFound(.*)', //이름 변경 가능!
+      component: NotFound
+    }
+//   ]
+// })
+```
+
+----
+## 부트스트랩 Breakpoint(반응형)
+[Breakpoints](https://getbootstrap.com/docs/5.1/layout/breakpoints/)<br>
+```css
+@include media-breakpoint-down(sm) { ... }
+@include media-breakpoint-down(md) { ... }
+@include media-breakpoint-down(lg) { ... }
+@include media-breakpoint-down(xl) { ... }
+@include media-breakpoint-down(xxl) { ... }
+```
 

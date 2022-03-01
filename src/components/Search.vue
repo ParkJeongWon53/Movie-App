@@ -77,6 +77,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~/scss/main";
   .container {
     display: flex;
     > * {
@@ -100,6 +101,25 @@ export default {
       width: 120px;
       height: 50px;
       font-weight: 700;
+      flex-shrink: 0;
     }
+
+    @include media-breakpoint-down(lg) {
+      display: block; // display: flex; 를block 으로! 수평에서 수직으로!
+      input {
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+      .selects {
+        margin-right: 0;
+        margin-bottom: 10px;
+        select {
+          width: 100%;
+        }
+      }
+    }
+  .btn {
+    width: 100%;
+  }
   }
 </style>
