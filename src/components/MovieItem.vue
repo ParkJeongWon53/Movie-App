@@ -20,7 +20,6 @@
 
 <script>
 import Loader from '~/components/Loader'
-
 export default {
   components: {
     Loader
@@ -28,7 +27,6 @@ export default {
   props: {
     movie: {
       type: Object,
-      // default: function () { return {} }
       default: () => ({})
     }
   },
@@ -44,10 +42,11 @@ export default {
     async init() {
       const poster = this.movie.Poster
       if (!poster || poster === 'N/A') {
-        this.imageLoding = false
+        this.imageLoading = false
+      } else {
+        await this.$loadImage(poster)
+        this.imageLoading = false
       }
-      await this.$loadImage(this.movie.Poster)
-      this.imageLoding = false
     }
   }
 }
