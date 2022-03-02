@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-
+import { mapState } from 'vuex'
+import Logo from '~/components/Logo'
 
 export default {
   components: {
@@ -44,22 +44,23 @@ export default {
         {
           name: 'Movie',
           href: '/movie/tt4520988',
-          path: /^\/movie/ // 정규 표현식: '/movie' 로 시작하는 경로인 경우에 일치
+          path: /^\/movie/
         },
         {
           name: 'About',
           href: '/about'
-        },
+        }
       ]
     }
   },
-  computed: {
-    image() {
-      return this.$store.state.about.image
-    },
-    name() {
-      return this.$store.state.about.name
-    }
+
+    computed: {
+    // import { mapState } from 'veux' 필수~!
+    // Vuex Helper로 간소화 할 수 있다.
+    ...mapState('about', [
+      'image',
+      'name'
+    ]),
   },
   methods: {
     isMatch(path) {
@@ -73,11 +74,10 @@ export default {
     }
   }
 }
+
 </script>
 
 <style lang="scss" scoped>
-@import "~/scss/main";
-
 header {
   height: 70px;
   padding: 0 40px;

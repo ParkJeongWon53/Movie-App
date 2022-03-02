@@ -77,7 +77,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~/scss/main";
   .container {
     display: flex;
     > * {
@@ -117,9 +116,9 @@ export default {
           width: 100%;
         }
       }
+      .btn {
+        width: 100%;
+      }
     }
-  .btn {
-    width: 100%;
-  }
   }
 </style>

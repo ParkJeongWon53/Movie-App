@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Loader from '~/components/Loader'
 
 export default {
@@ -30,22 +31,31 @@ export default {
     }
   },
   computed: {
+    // import { mapState } from 'veux' 필수~!
     // Vuex Helper로 간소화 할 수 있다.
-    image() {
-      return this.$store.state.about.image
-    },
-    name() {
-      return this.$store.state.about.name
-    },
-    github() {
-      return this.$store.state.about.github
-    },
-    email() {
-      return this.$store.state.about.email
-    },
-    phone() {
-      return this.$store.state.about.phone
-    }
+    ...mapState('about', [
+      'image',
+      'name',
+      'github',
+      'email',
+      'phone'
+    ])
+    // Vuex Helper로 위 코드로 간소화.
+    // image() {
+    //   return this.$store.state.about.image
+    // },
+    // name() {
+    //   return this.$store.state.about.name
+    // },
+    // github() {
+    //   return this.$store.state.about.github
+    // },
+    // email() {
+    //   return this.$store.state.about.email
+    // },
+    // phone() {
+    //   return this.$store.state.about.phone
+    // }
   },
   mounted() {
     this.init()
@@ -60,8 +70,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~/scss/main";
-
 .about {
   text-align: center;
   .photo {

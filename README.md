@@ -363,3 +363,133 @@ export default createRouter({
 @include media-breakpoint-down(xxl) { ... }
 ```
 
+## 모든 컴포넌트에서 전역 스타일 가져오기
+매번 @import "~/scss/main" 를 vue.js 에서 불러오는 작업은 불편하다.
+[sass-loader github](https://github.com/webpack-contrib/sass-loader#additionaldata)<br>
+### additionalData
+1. webpack.config.js 파일 오픈
+```js
+{
+        // test: /\.s?css$/,
+        // use: [
+        //   // 순서 중요!
+        //   'vue-style-loader',
+        //   'style-loader',
+        //   'css-loader',
+        //   'postcss-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              additionalData: '@import "~/scss/main";'
+            }
+          }
+      //   ]
+      // },
+```
+2. 모든 파일에서 '@import "~/scss/main" 삭제.(단 webpack.config.j 과 main.scss 파일은 제외)
+3. 개발서버 종료후 다시 실행!
+-----
+
+## Vuex Helpers
+About.vue 파일에서 반복적인 코드를 발견 할 수 있다.
+```js
+computed: {
+    // Vuex Helper로 간소화 할 수 있다.
+    image() {
+      return this.$store.state.about.image
+    },
+    name() {
+      return this.$store.state.about.name
+    },
+    github() {
+      return this.$store.state.about.github
+    },
+    email() {
+      return this.$store.state.about.email
+    },
+    phone() {
+      return this.$store.state.about.phone
+    }
+  },
+```
+[Vuex](https://vuex.vuejs.org/guide/state.html#the-mapstate-helper)<br>
+
+```js
+// 간소화된 코드
+computed: {
+    ...mapState('about', [ // 전개연산자 사용 권장!
+      'image',
+      'name',
+      'github',
+      'email',
+      'phone'
+    ])
+  },
+------------------ 
+// 공식 문서처럼 전개연산자 없이 사용 가능하다.
+// 하지만 store 에서 가지고 오는 데이터만 사용하는 것이 아닐 수 있다.
+  computed: mapState('about', [ 
+      'image',
+      'name',
+      'github',
+      'email',
+      'phone'
+    ]),
+
+-----------------
+computed: { 
+  jeong() {
+    // 추가적인 함수를 적용 할 수 있기 때문에 computed: 에 위 코드처럼 mapState 를 직접 할당 하지말자!!
+  }
+    ...mapState('about', [ // 전개연산자 사용 권장!
+      'image',
+      'name',
+      'github',
+      'email',
+      'phone'
+    ])
+  },
+
+```
+---------
+## 검색 정보 초기화 및 페이지 잔환 스크롤 위치 복구
+영화 검색후 포스터들중에 아래있는 포스터 클릭시 mpvie 페이지에서 도 아래로 내려와있는 현상과,
+다시 search페이지로 돌아와도 그대로 검색정보를 가지고 있는 현상을 변경해보자!!<br>
+[scroll-behavior](https://router.vuejs.org/guide/advanced/scroll-behavior.html)<br>
+store 폴더의 movie.js 파일에서 resetMovies 메소드에 빈 배열로 초기화 해주는 코드로 작성 되어있다.<br>
+message, loading 을 초기화 해주자!!
+```js
+// _defaultMessage 는 장문의 글자를 수정 했을 때 오타가 날 수 있고, 수정에 용이하도록 변수 설정!!
+// const _defaultMessage = 'Search for the movie title!'
+resetMovies(state) {
+  state.movies = []
+  state.message = _defaultMessage
+  state.loading = false
+}
+```
+초기화 코드는 Home.vue 파일에서 실행 되어야 한다.
+```js
+// <template>
+//   <Headline />
+//   <Search />
+//   <MovieList />
+// </template>
+
+// <script>
+// import Headline from '~/components/Headline'
+// import Search from '~/components/Search'
+// import MovieList from '~/components/MovieList'
+
+// export default {
+//   components: {
+//     Headline,
+//     Search,
+//     MovieList
+//   },
+  created() {
+    this.$store.commit('movie/resetMovies')
+  }
+// }
+// </script>
+```
+------
