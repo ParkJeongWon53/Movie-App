@@ -34,7 +34,7 @@ export default {
   },
   data() {
     return {
-      imageLoding: true
+      imageLoading: true
     }
   },
   mounted() {
