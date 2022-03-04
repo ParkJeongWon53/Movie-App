@@ -493,3 +493,27 @@ resetMovies(state) {
 // </script>
 ```
 ------
+## Netlify Serverless Functions
+배포된 서버에 보안이슈가 될 수 있는 내용들을 쉽게 볼 수 있다.<br>
+[netlify-functions](https://docs.netlify.com/functions/overview/)<br>
+1. 루트 경로에 netlify.toml 파일생성
+```
+[build]
+  functions = "functions"
+```
+2. 루트 경로에 functions 폴더 생성후 테스트용 hello.js 파일 생성
+```js
+exports.handler = async function (event, context) {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ //body 에는 문자데이터만 할당 가능하기에 JSON.stringify 를 사용해 객체데이터를 문자데이터로 변환하여 사용가능!
+      name: 'JEONG',
+      email: 'qkrwjd53@gmail.com'
+    })
+  }
+}
+```
+https://modest-wozniak-58eb16.netlify.app/.netlify/functions/hello <br>
+netlify-cli[netlify-dev](https://cli.netlify.com/netlify-dev)<br>
+----------------
+## 영화정보 반환 API 만들기

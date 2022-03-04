@@ -86,10 +86,10 @@ export default {
             })
           }
         }
-      } catch( message){
+      } catch( { message }){
         commit('updateState', {
           movies: [],
-          message: message
+          message
         })
       } finally { // 무조건 loading: false 값으로 지정됨.
         commit('updateState', {
@@ -124,23 +124,10 @@ export default {
   }
 }
 
-function _fatchMovie(payload) {
-  const { title, type, year, page, id } = payload
-  const OMDB_API_KEY = '7035c60c'
-  const  url = id 
-  ? `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}` 
-  : `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=${page}`
-  
-  return new Promise((reslove, reject) => {
-    axios.get(url)
-      .then((res) => {
-        if (res.data.Error) {
-          reject(res.data.Error)
-        }
-        reslove(res)
-      })
-      .catch((err) => {
-        reject(err.message)
-      })
-  })
+
+
+
+
+async function _fatchMovie(payload) {
+  return await axios.post('/.netlify/functions/movie', payload)
 }
