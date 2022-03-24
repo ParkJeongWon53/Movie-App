@@ -517,3 +517,437 @@ https://modest-wozniak-58eb16.netlify.app/.netlify/functions/hello <br>
 netlify-cli[netlify-dev](https://cli.netlify.com/netlify-dev)<br>
 ----------------
 ## 영화정보 반환 API 만들기
+----
+-----------
+# 단위 테스트
++ **Unit Test**<br>
+단위(Unit) 테스트란 데이터(상태), 함수(메소드), 컴포넌트 등의 정의된 프로그램 최소 단위들이 독입적으로 동작하는지 확인하는 방법.
+  * 코드위주의 테스트
+  * **Jest** 프레임워크를 사용하여 테스트한다, **Vue Test Utils** 를 사용하여Vue환경에서  Jest 를 연결할 수 있다.
++ **E2E Test**<br>
+E2E(End to End) 테스트란 애플리케이션의 처음부터 끝까지의 실제 사용자의 관점에서 사용 흐름을 테스트하는 방법.
+  * 프로젝트 화면에서 테스트.
+  * Cypress 를 사용하여 테스트 할 수 있다.
+----
+## Unit Test
+### 테스트 환경 구성
+Jest 페키지 설치!!
+```
+npm i -D @vue/test-utils@next vue-jest@next babel-jest
+```
+1. jest.config.js 루트경로에 생성!
+2. tests 루트경로에 폴더 생성!
+3. example.test.js 파일과 example.js 파일 생성!!
+4. example.test.js 파일에서 작성 할때 에러가 나오기 때문에
+5. .eslintrc.js 파일 추가!!
+```js
+  env: {
+    // browser: true,
+    // node: true,
+    jest: true
+  },
+```
+6. example.js 작성!
+```js
+// example.test.js 에서 파일 읽을 수 있게 export 로 내보내준다.
+export function double(num) {
+  if (!num) {
+    return 0
+  }
+  return num *2
+}
+```
+7. example.test.js 테스트 코드 작성.
+```js
+import { double  } from './example'
+
+test ('첫 테스트',  () => {
+  expect(123).toBe(123)
+})
+
+
+test('인수가 숫자 데이터입니다', () => {
+  expect(double(3)).toBe(6)
+  expect(double(10)).toBe(20)
+})
+
+
+test('인수가 없습니다', () => {
+  expect(double()).toBe(0)
+  
+})
+```
+8. 터미널에서 테스트 코드 사용하기.
+```json
+  "scripts": {
+    // "dev:webpack": "webpack-dev-server --mode development",
+    // "dev": "netlify dev",
+    // "build": "webpack --mode production",
+    // "lint": "eslint --fix --ext .js,.vue",
+    "test:unit": "jest --watchAll" 
+    // --watchAll : 모든 변경사항 감시.
+    //E2E 테스트도 진행하기 위해 특정이름 만들어주기.
+  },
+```
+9. 테스트 시작.
+```
+npm run test:unit
+```
+```
+ PASS  tests/example.test.js
+  √ 첫 테스트 (2 ms)
+  √ 인수가 숫자 데이터입니다 (6 ms)
+  √ 인수가 없습니다 (1 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       3 passed, 3 total
+Snapshots:   0 total
+Time:        3.691 s
+Ran all test suites.
+```
+-----
+[jest testing](https://jestjs.io/docs/api)<br>
+## Methods
+* afterAll(fn, timeout)
+* afterEach(fn, timeout)
+* beforeAll(fn, timeout)
+* beforeEach(fn, timeout)
+* describe(name, fn)
+* test(name, fn, timeout)
+```js
+import { double  } from './example'
+
+describe('그룹1' , () => {
+  beforeAll(() => { // 모든 테스트가 시작되기전 단1번만 작동.
+    console.log('beforeAll')
+  })
+  afterAll(() => { // 모든 테스트가 시작된 후 단1번만 작동.
+    console.log('afterAll')
+  })
+
+  beforeEach(() => { // 각각의 테스트들이 시작되기전 작동.
+    console.log('beforeEach')
+  })
+  afterEach(() => { // 각각의 테스트들이 시작된 후 작동.
+    console.log('afterEach')
+  })
+
+
+  test ('첫 테스트',  () => {
+    console.log('첫 테스트')
+    expect(123).toBe(123)
+  })
+  
+  test('인수가 숫자 데이터입니다', () => {
+    console.log('인수가 숫자 데이터입니다')
+    expect(double(3)).toBe(6)
+    expect(double(10)).toBe(20)
+  })
+  
+  test('인수가 없습니다', () => {
+    console.log('인수가 없습니다')
+    expect(double()).toBe(0)
+    
+  })
+})
+```
+<br>
+
++ .toBe(value)
+```js
+// 실제 데이터와 기대 데이터 비교.
+const can = {
+  name: 'pamplemousse',
+  ounces: 12,
+};
+
+describe('the can', () => {
+  test('has 12 ounces', () => {
+    expect(can.ounces).toBe(12);
+  });
+
+  test('has a sophisticated name', () => {
+    expect(can.name).toBe('pamplemousse');
+  });
+});
+```
+<br>
+객체데이터와 배열 데이터(참조형 데이터) 테스트
++ .toEqual(value)
+
+```js
+const can1 = {
+  flavor: 'grapefruit',
+  ounces: 12,
+};
+const can2 = {
+  flavor: 'grapefruit',
+  ounces: 12,
+};
+
+describe('the La Croix cans on my desk', () => {
+  test('have all the same properties', () => {
+    expect(can1).toEqual(can2);
+  });
+  test('are not the exact same can', () => {
+    expect(can1).not.toBe(can2);
+  });
+});
+```
+## 비동기 테스트
+```js
+// example.test.js
+import { asyncFn } from './example'
+
+describe('비동기 테스트', () => {
+  test('done', () => {
+    asyncFn().then(res => {
+      expect(res).toBe('Done?')
+    })
+  })
+})
+
+// example.js
+export function asyncFn() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve('Done!')
+    },2000)
+  })
+}
+// 결과
+// 테스트 통과로 나온다.(테스트 실패값을 적용해도 통과한다. )
+// 비동기 테스트는 정상작동하지 않음.
+```
+
+
+```js
+// example.test.js
+import { asyncFn } from './example'
+
+describe('비동기 테스트', () => {
+  test('done', (done) => {
+    asyncFn().then(res => {
+      expect(res).toBe('Done!')
+      done()
+    })
+  })
+})
+
+// 결과
+// 테스트 통과로 나온다.( 테스트값 정상적용 )
+// 테스터입장에서 얼마나 기다려야 하는지 모르기때문에 done 를 작성하여 비동기 코드가 동작하고 done() 실행후 종료 하게되어 정상작동하게된다.
+```
+비동기 테스트 방법
+```js
+import { asyncFn } from './example'
+
+describe('비동기 테스트', () => {
+  // 비동기 테스트 1
+  test('done', (done) => {
+    asyncFn().then(res => {
+      expect(res).toBe('Done!')
+      done()
+    })
+  })
+
+  // 비동기 테스트 2
+  test('then', () => {
+    return asyncFn().then(res => {
+      expect(res).toBe('Done!')
+    })
+  })
+
+  // 비동기 테스트 3
+  test('resolves', () => {
+    return expect(asyncFn()).resolves.toBe('Done!')
+  })
+
+  // 비동기 테스트 4
+  test('async/await', async () => {
+    const res = await asyncFn()
+    expect(res).toBe('Done!')
+  })
+})
+
+```
+<br>
+
+```js
+// example.test.js
+import { asyncFn } from './example'
+
+describe('비동기 테스트', () => {
+  test('async/await', async () => {
+    const res = await asyncFn()
+    expect(res).toBe('Done!')
+  })
+})
+
+// example.js
+export function asyncFn() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve('Done!')
+    },6000) // 딜레이 6초
+  })
+}
+// 결과 
+// 테스트 실패
+// test함수가 최대 5초까지 기다리도록 설정되어 있기 때문.
+
+
+// 수정
+// example.test.js
+import { asyncFn } from './example'
+
+describe('비동기 테스트', () => {
+  test('async/await', async () => {
+    const res = await asyncFn()
+    expect(res).toBe('Done!')
+  }, 7000) // 기본값 5000(5초) 에서 설정값으로 6초 이상인 7초 설정하여 테스트 문제없이 통과.
+})
+```
+
+
+----
+## 모의(Mock) 함수
+최소한의 시간으로 테스트
+```js
+// example.js
+import axios from 'axios'
+import _upperFirst from 'lodash/upperFirst' // 첫글자 대문자화
+import _toLower from 'lodash/toLower' // 모두 소문자화
+
+
+export async function fetchMovieTitle() {
+  const res = await axios.get('https://omdbapi.com?apikey=7035c60c&i=tt4520988')
+  return _upperFirst(_toLower(res.data.Title)) // Frozen II => Frozen ii (첫글자를 제외하고 소문자변환.)
+}
+
+// example.test.js
+import { fetchMovieTitle } from './example'
+
+describe('비동기 테스트', () => {
+  test('영화 재목 변환', async () => {
+    const title = await fetchMovieTitle()
+    expect(title).toBe('Frozen ii')
+  })
+})
+```
+omdbapi 에서 특정한 영화 정보를 요청하였고, 재대로 값을 읽어오지 못하는 상황이라면, 테스트진행하지 못한다.<br>
+데이터를 가지고 오는 행위까지 테스트에 포함시크는 것은 낭비이다.<br>
+이때 사용 할 수 있는 것이 모의 테스트이다.
+```js
+// example.test.js
+import axios from 'axios'
+import { fetchMovieTitle } from './example'
+
+describe('비동기 테스트', () => {
+  test('영화 재목 변환', async () => {
+
+    axios.get = jest.fn(() => {
+      return new Promise(resolve => {
+        resolve({
+          data: {
+            Title: 'Frozen II'
+          }
+        })
+      })
+    }) // 모의 함수
+    
+    const title = await fetchMovieTitle()
+    expect(title).toBe('Frozen ii')
+  })
+})
+```
+테스트환경에서 네트워크를 끊고 실행하여도 테스트는 모의 함수를 통해 동작하게된다.
+----
+## VTU 첫 테스트
+[vue-test-utils](https://test-utils.vuejs.org/guide/#what-is-vue-test-utils)
+```vue
+<template>
+  <div>
+    {{ msg }}
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      msg: 'Hello Vue test utils!'
+    }
+  },
+  mounted() {
+    console.log(this.msg)
+  }
+}
+</script>
+```
+```js
+// example.test.js
+import { mount } from '@vue/test-utils' // 공식문서 확인!
+import Example from './Example.vue'
+
+test('메세지를 변경합니다.', async() => {
+  const wrapper = mount(Example)
+  // wrapper.vm === this 기능과 동일하다.
+  expect(wrapper.vm.msg).toBe('Hello Vue test utils!')
+  
+  // wrapper.vm.msg = 'Hello Jeong'
+  await wrapper.setData({ 
+    // setData를 사용하면 데이터를 테스트환경에서 할당 할 수 있다.
+    // setData 는 비동기로 동작한다.
+    msg: 'Hello Jeong'
+  })
+  expect(wrapper.vm.msg).toBe('Hello Jeong')
+  expect(wrapper.find('div').text()).toBe('Hello Jeong')
+})
+```
+## Header 컴포넌트
+Header.vue 파일을 테스트해보자.
+```js
+// Header.test.js
+import { shallowMount } from '@vue/test-utils'
+import router from '~/routes'
+import store from '~/store'
+import Header from '~/components/Header'
+
+
+describe('components/Header.vue', () => {
+  // 각 테스트에서 다음테스트로 넘어갈때 Header 라는 컴포넌트를 새롭게 등록시켜줘야 간섭이 안생긴다.
+  // beforeEach : 각각의 테스트가 동작하기전에 컴포넌트를 등록해주면 매번 Header 를 등록시켜 줄 필요없어진다.
+  
+  let wrapper // 제할당이 가능하도록 let 사용. // wrapper가 함수 내부에서만 사용가능한 문제.
+  beforeEach(async() => {
+    window.scrollTo = jest.fn()
+    router.push('/movie/tt1234567')
+    await router.isReady()
+    wrapper = shallowMount(Header ,{ 
+      global: {
+        plugins: [  // main.js 처럼 플러그인 등록과 유사하다.
+          router,
+          store
+        ]
+      }
+    })
+  })
+
+  test('경로 정규표헌식이 없는 경우 일치하지 않습니다.', () => {
+    const regExp = undefined
+    expect(wrapper.vm.isMatch(regExp)).toBe(false)
+  })
+
+  test('경로 정규표헌식과 일치해야 합니다', () => {
+    const regExp = /^\/movie/
+    expect(wrapper.vm.isMatch(regExp)).toBe(true)
+  })
+
+  test('경로 정규표헌식과 일치하지 않아야 합니다', () => {
+    const regExp = /^\/jeong/
+    expect(wrapper.vm.isMatch(regExp)).toBe(false)
+  })
+
+})
+```

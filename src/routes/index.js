@@ -9,7 +9,7 @@ export default createRouter({
   // Hash모드
   // https://google.com/#/search
   history: createWebHashHistory(),
-  scrollBehavior() {
+  scrollBehavior() { // 최상단으로 이동.
     return { top: 0 }
   },
   

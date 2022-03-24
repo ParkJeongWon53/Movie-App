@@ -2,7 +2,8 @@ module.exports = {
   // 사전에 정의된 전역 변수 설정
   env: {
     browser: true,
-    node: true
+    node: true,
+    jest: true
   },
   // 사용 가능한 규칙 세트
   extends: [
