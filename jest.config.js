@@ -24,7 +24,7 @@ module.exports = {
   modulePathIgnorePatterns: [ // 테스트가 필요없는부분 예외처리 가능!!
     '<rootDir>/node_modules',
     '<rootDir>/dist',
-    '<rootDir>/cypress'
+    '<rootDir>/cypress' // cypress까지 불러오는것을 방지하여  에러나는 현상을 방지
   ],
 
   // jsdom 환경에 대한 URL을 설정합니다.
